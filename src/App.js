@@ -10,19 +10,30 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      adminMode:true,
-      columns: 4,
-      rows: 4,
-      questions: []
+      grid: [{question:'',answer:''},{question:'',answer:''},{question:'',answer:''},{question:'',answer:''},
+             {question:'',answer:''},{question:'',answer:''},{question:'',answer:''},{question:'',answer:''},
+             {question:'',answer:''},{question:'',answer:''},{question:'',answer:''},{question:'',answer:''},
+             {question:'',answer:''},{question:'',answer:''},{question:'',answer:''},{question:'',answer:''}]
     }
+  }
+
+  addQuestion = (event, id, question, answer) => {
+    event.preventDefault();
+    console.log(`addQuestion running with id: ${id}, question: ${question} and answer: ${answer}`);
+    let updatedGrid = Array.from(this.state.grid);
+    updatedGrid[id] = {
+      question: question,
+      answer: answer
+    }
+    this.setState({
+      grid: updatedGrid
+    })
   }
 
   render() {
     let QuestionBoxJSX = [];
-    for (let i = 0; i < this.state.rows; i++) {
-      for (let j = 0; j < this.state.columns; j++) {
-        QuestionBoxJSX.push(<div className={'col-' + (12/this.state.columns) }> <QuestionBox id={`${j}-${i}`} /> </div>)
-      }
+    for (let i = 0; i < this.state.grid.length; i++) {
+      QuestionBoxJSX.push(<QuestionBox addQuestion={this.addQuestion} question={this.state.grid[i].question} index={i} key={i} />)
     }
 
     return (
